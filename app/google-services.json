@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "957268121872",
+    "project_id": "sangeet-e3fa3",
+    "storage_bucket": "sangeet-e3fa3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:957268121872:android:6e5c33e2583a5493e62d95",
+        "android_client_info": {
+          "package_name": "com.example.sangeet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "957268121872-jf8ien98ndh1ln9f8b2ugqelrvkmgnqs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sangeet",
+            "certificate_hash": "15beedcd28a1e4a78ece88a6cba2d3813753b50f"
+          }
+        },
+        {
+          "client_id": "957268121872-fcu36mkugl2g2gol5cv2p88ecqs0u19q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8fW1z9z6ewk3oJBi5RuCrlr6t7jbZmD0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "957268121872-fcu36mkugl2g2gol5cv2p88ecqs0u19q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
