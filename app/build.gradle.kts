@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.play.services.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -61,15 +62,17 @@ dependencies {
     // Firebase Auth
     implementation("com.google.firebase:firebase-auth-ktx")
 
-// Firebase BOM (manages versioning)
+    // Firebase BOM (manages versioning)
     implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
 
     implementation("com.google.firebase:firebase-firestore-ktx")
 
-// ExoPlayer
+    // ExoPlayer
     implementation("androidx.media3:media3-exoplayer:1.3.1")
     implementation("androidx.media3:media3-ui:1.3.1")
 
     // Compose ViewModel support
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+
+    implementation("io.coil-kt:coil-compose:2.5.0")
 }

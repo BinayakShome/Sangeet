@@ -1,6 +1,7 @@
 package com.example.sangeet.player
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,31 +19,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.sangeet.components.SongCard
 import com.example.sangeet.data.Song
 import com.example.sangeet.vm.SongListViewModel
 
-@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun SongListScreen(
     songs: List<Song>,
-    onSongSelected: (Song) -> Unit
+    onSongClick: (Song) -> Unit
 ) {
-    if (songs.isEmpty()) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("No songs loaded")
-        }
-    } else {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)
-        ) {
-            items(songs) { song ->
-                SongCard(song = song, onClick = { onSongSelected(song) })
-                Spacer(modifier = Modifier.height(12.dp))
-            }
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF121212))
+            .padding(8.dp)
+    ) {
+        items(songs) { song ->
+            SongCard (song = song, onClick = { onSongClick(song) })
+            Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }

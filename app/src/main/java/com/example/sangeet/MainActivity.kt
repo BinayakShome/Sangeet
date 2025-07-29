@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     if (selectedSong == null) {
                         SongListScreen(
                             songs = songs,
-                            onSongSelected = { selectedSong = it }
+                            onSongClick = { selectedSong = it }
                         )
                     } else {
                         PlayerScreen(
