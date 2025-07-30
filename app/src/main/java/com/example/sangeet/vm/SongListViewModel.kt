@@ -3,16 +3,18 @@ package com.example.sangeet.vm
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.sangeet.data.Playlist
 import com.example.sangeet.data.Song
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SongListViewModel : ViewModel() {
 
     private val _songListState = MutableStateFlow<List<Song>>(emptyList())
-    val songListState = _songListState.asStateFlow()
+    val songListState: StateFlow<List<Song>> = _songListState.asStateFlow()
 
     private val db = FirebaseFirestore.getInstance()
 
@@ -22,13 +24,38 @@ class SongListViewModel : ViewModel() {
 
     private fun fetchSongs() {
         db.collection("songs")
-            .get()
-            .addOnSuccessListener { result ->
-                val songs = result.documents.mapNotNull { it.toObject(Song::class.java) }
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.e("Firestore", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+
+                val songs = snapshots?.documents?.mapNotNull {
+                    it.toObject(Song::class.java)
+                }.orEmpty()
+
                 _songListState.value = songs
             }
-            .addOnFailureListener { exception ->
-                Log.e("Firestore", "Failed to fetch songs", exception)
-            }
+    }
+
+    // Returns a playlist (filtered songs by genre)
+    fun getPlaylistByName(name: String): Playlist {
+        val songs = _songListState.value.filter { it.genre == name }
+        return Playlist(title = name, songs = songs)
+    }
+
+    private val _currentSong = MutableStateFlow<Song?>(null)
+    val currentSong: StateFlow<Song?> = _currentSong
+
+    private val _isPlaying = MutableStateFlow(false)
+    val isPlaying: StateFlow<Boolean> = _isPlaying
+
+    fun togglePlayPause() {
+        _isPlaying.value = !_isPlaying.value
+    }
+
+    fun playSong(song: Song) {
+        _currentSong.value = song
+        _isPlaying.value = true
     }
 }

@@ -19,12 +19,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.navigation.NavController
+import com.example.sangeet.vm.SongListViewModel
 
 @Composable
 fun PlayerScreen(
     audioUrl: String,
     title: String = "Sample Song",
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ) {
     val context = LocalContext.current
     val exoPlayer = remember {
