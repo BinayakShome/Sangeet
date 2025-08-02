@@ -8,16 +8,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.sangeet.data.Playlist
+import com.example.sangeet.data.Song
 import com.example.sangeet.player.HomeScreen
+import com.example.sangeet.player.HomeScreen2
 import com.example.sangeet.player.PlayerScreen
 import com.example.sangeet.player.PlaylistScreen
+import com.example.sangeet.player.playlistscreen
 import com.example.sangeet.vm.SongListViewModel
 
 @Composable
 fun AppNavHost(navController: NavHostController, viewModel: SongListViewModel) {
     NavHost(
         navController = navController,
-        startDestination = "home"
+        startDestination = "home2"
     ) {
         composable("home") {
             HomeScreen(
@@ -46,6 +49,22 @@ fun AppNavHost(navController: NavHostController, viewModel: SongListViewModel) {
                 title = title,
                 onBack = { navController.popBackStack() }
             )
+        }
+        composable("home2")
+        {
+            HomeScreen2(navController, viewModel)
+        }
+
+        composable("playlistscreen/{category}") { backStackEntry ->
+            val category = backStackEntry.arguments?.getString("category") ?: ""
+            playlistscreen(category = category,
+                viewModel = viewModel,
+                onSongClick = { song ->
+                    // Navigate to player screen with audioUrl and title as arguments
+                    val encodedUrl = Uri.encode(song.streamUrl)
+                    val encodedTitle = Uri.encode(song.title)
+                    navController.navigate("player/$encodedUrl/$encodedTitle")
+                })
         }
     }
 }

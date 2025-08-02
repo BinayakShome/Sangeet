@@ -17,6 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.sangeet.data.Song
 import com.example.sangeet.navigation.AppNavHost
+import com.example.sangeet.player.HomeScreen2
 import com.example.sangeet.player.PlayerScreen
 import com.example.sangeet.player.SongListScreen
 import com.example.sangeet.ui.theme.SangeetTheme
@@ -34,6 +35,10 @@ class MainActivity : ComponentActivity() {
 
                 Surface(modifier = Modifier.fillMaxSize()) {
                     AppNavHost(navController = navController, viewModel = viewModel)
+//                    //HomeScreen2(
+//                        navController = navController,
+//                        viewModel = viewModel
+//                    )
                 }
             }
         }
