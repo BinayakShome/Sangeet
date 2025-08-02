@@ -1,7 +1,9 @@
 package com.example.sangeet.player
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -21,21 +23,34 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.toLowerCase
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sangeet.components.SongCard
 import com.example.sangeet.data.Song
+import com.example.sangeet.ui.theme.GoldenYellow
+import com.example.sangeet.ui.theme.SunsetOrange
 import com.example.sangeet.vm.SongListViewModel
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,17 +59,38 @@ fun HomeScreen2(
     viewModel: SongListViewModel
 )
 {
-    val categories = listOf("Romance", "Lo-fi", "Devotional", "Chill", "Party")
+    val categories = listOf("Romance", "Lo-fi", "Devotional", "Chill", "Party", "Bengali", "HollyWood", "Old 90s")
+    var currentHour by remember { mutableStateOf(getCurrentHour()) }
+    var greet by remember { mutableStateOf("Hello") }
+
+    //For current hour
+    LaunchedEffect(currentHour) {
+        greet = when {
+            currentHour in 4..11 -> "Morning"
+            currentHour in 12..16 -> "Afternoon"
+            currentHour in 17..21 -> "Evening"
+            else -> "Night"
+        }
+    }
     Scaffold(
         topBar = {
+            Spacer(modifier = Modifier.height(32.dp))
             TopAppBar(
                 title = {
+
                     Column {
                         Text(
-                            text = "Good Evening",
-                            color = Color.White,
+                            text = buildAnnotatedString {
+                                withStyle(style = SpanStyle(color = Color.White)) {
+                                    append("Good")
+                                }
+                                withStyle(style = SpanStyle(color = GoldenYellow)) {
+                                    append(greet)
+                                }
+                            },
                             fontWeight = FontWeight.Bold,
-                            fontSize = 28.sp
+                            fontSize = 28.sp,
+
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
@@ -77,12 +113,19 @@ fun HomeScreen2(
                 modifier = Modifier
             ) {
                 item {
-                    Text(text = "What's your mood upto",
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = GoldenYellow)) {
+                                append("Pick a mood,")
+                            }
+                            withStyle(style = SpanStyle(color = SunsetOrange)) {
+                                append("\n      Set the groove!")
+                            }
+                        },
                         fontWeight = FontWeight.ExtraBold,
-                        //fontStyle = FontStyle.Italic,
                         fontSize = 24.sp,
                         modifier = Modifier.padding(start = 8.dp),
-                        color = Color(0xFFCC7722)
+                        color = SunsetOrange
                     )
                     Spacer(Modifier.height(24.dp))
                 }
@@ -127,13 +170,14 @@ fun PlayCard(
         Box (
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Magenta),
-            contentAlignment = Alignment.BottomCenter
+                .background(Color.Transparent),
+            contentAlignment = Alignment.BottomEnd
         ){
             Text(text = category,
                 fontSize = 32.sp,
                 fontStyle = FontStyle.Italic,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(end = 16.dp, bottom = 16.dp)
                 )
         }
     }
@@ -156,4 +200,11 @@ fun playlistscreen(
             }
         }
     }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun getCurrentHour(): Int {
+    val currentDateTime = LocalDateTime.now()
+    val formatter = DateTimeFormatter.ofPattern("HH") // Use "HH" for 24-hour format
+    return currentDateTime.format(formatter).toInt() // Format to display only the hour
 }

@@ -78,6 +78,20 @@ dependencies {
 
     //navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")
-
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+
+    //Animation
+    implementation("androidx.compose.ui:ui:1.7.6")
+    implementation("androidx.compose.foundation:foundation:1.7.6")
+    implementation("androidx.compose.animation:animation:1.7.6")
+    implementation("androidx.compose.material:material:1.7.6")
+
+    //Animated Navigation
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.32.0")
+
+    //Lotte Animation
+    implementation("com.airbnb.android:lottie-compose:6.0.0")
+
+    //material3
+    implementation("androidx.compose.material:material-icons-extended:1.5.0")
 }
