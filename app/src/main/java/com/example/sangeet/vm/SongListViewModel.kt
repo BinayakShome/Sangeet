@@ -1,8 +1,10 @@
 package com.example.sangeet.vm
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.sangeet.data.NetworkUtils
 import com.example.sangeet.data.Playlist
 import com.example.sangeet.data.Song
 import com.google.firebase.firestore.FirebaseFirestore
@@ -58,4 +60,13 @@ class SongListViewModel : ViewModel() {
         _currentSong.value = song
         _isPlaying.value = true
     }
+
+    private val _showNoInternet = MutableStateFlow(false)
+    val showNoInternet: StateFlow<Boolean> = _showNoInternet
+    fun checkInternetAvailability(context: Context) {
+        viewModelScope.launch {
+            _showNoInternet.value = !NetworkUtils.isInternetAvailable(context)
+        }
+    }
+
 }

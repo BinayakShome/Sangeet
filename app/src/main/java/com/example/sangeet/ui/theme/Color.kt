@@ -12,3 +12,4 @@ val Pink40 = Color(0xFF7D5260)
 
 val GoldenYellow = Color(0xFFFFD700)
 val SunsetOrange = Color(0xFFFF7043)
+val WarningAmber = Color(0xFFFFC107)

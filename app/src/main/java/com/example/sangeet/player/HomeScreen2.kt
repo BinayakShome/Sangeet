@@ -32,21 +32,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.sangeet.components.SongCard
-import com.example.sangeet.data.Song
+import com.example.sangeet.components.NoInternet
 import com.example.sangeet.ui.theme.GoldenYellow
 import com.example.sangeet.ui.theme.SunsetOrange
 import com.example.sangeet.vm.SongListViewModel
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -57,27 +55,31 @@ import java.time.format.DateTimeFormatter
 fun HomeScreen2(
     navController: NavController,
     viewModel: SongListViewModel
-)
-{
+) {
+    val context = LocalContext.current
     val categories = listOf("Romance", "Lo-fi", "Devotional", "Chill", "Party", "Bengali", "HollyWood", "Old 90s")
     var currentHour by remember { mutableStateOf(getCurrentHour()) }
     var greet by remember { mutableStateOf("Hello") }
+    val showNoInternet by viewModel.showNoInternet.collectAsState()
 
-    //For current hour
     LaunchedEffect(currentHour) {
-        greet = when {
-            currentHour in 4..11 -> "Morning"
-            currentHour in 12..16 -> "Afternoon"
-            currentHour in 17..21 -> "Evening"
+        greet = when (currentHour) {
+            in 4..11 -> "Morning"
+            in 12..16 -> "Afternoon"
+            in 17..21 -> "Evening"
             else -> "Night"
         }
     }
+
+    LaunchedEffect(Unit) {
+        viewModel.checkInternetAvailability(context)
+    }
+
     Scaffold(
         topBar = {
             Spacer(modifier = Modifier.height(32.dp))
             TopAppBar(
                 title = {
-
                     Column {
                         Text(
                             text = buildAnnotatedString {
@@ -89,8 +91,7 @@ fun HomeScreen2(
                                 }
                             },
                             fontWeight = FontWeight.Bold,
-                            fontSize = 28.sp,
-
+                            fontSize = 28.sp
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
@@ -105,55 +106,72 @@ fun HomeScreen2(
             )
         },
         modifier = Modifier.padding(top = 8.dp)
-    ) {
+    ) { paddingValues ->
         Column(
-            modifier = Modifier.fillMaxSize().background(Color.DarkGray).padding(top = 132.dp))
-        {
-            LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.DarkGray)
+                .padding(top = 132.dp)
+        ) {
+            LazyColumn (
                 modifier = Modifier
-            ) {
-                item {
-                    Text(
-                        text = buildAnnotatedString {
-                            withStyle(style = SpanStyle(color = GoldenYellow)) {
-                                append("Pick a mood,")
-                            }
-                            withStyle(style = SpanStyle(color = SunsetOrange)) {
-                                append("\n      Set the groove!")
-                            }
-                        },
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 24.sp,
-                        modifier = Modifier.padding(start = 8.dp),
-                        color = SunsetOrange
-                    )
-                    Spacer(Modifier.height(24.dp))
-                }
+                    .fillMaxSize()
+                    .padding(top = 16.dp)
+            ){
+                when {
+                    showNoInternet -> {
+                        item { NoInternet() }
+                        Log.d("internet","no internet detected")
+                    }
+                    else -> {
+                        item {
+                            Text(
+                                text = buildAnnotatedString {
+                                    withStyle(style = SpanStyle(color = GoldenYellow)) {
+                                        append("Pick a mood,")
+                                    }
+                                    withStyle(style = SpanStyle(color = SunsetOrange)) {
+                                        append("\n      Set the groove!")
+                                    }
+                                },
+                                fontWeight = FontWeight.ExtraBold,
+                                fontSize = 24.sp,
+                                modifier = Modifier.padding(start = 8.dp),
+                                color = SunsetOrange
+                            )
+                            Spacer(Modifier.height(24.dp))
+                        }
 
-                item {
-                    LazyRow {
-                        items(categories){ category ->
-                            PlayCard(
-                                category = category,
-                                onClick = {
-                                    Log.d("NAVIGATION", "Navigating to playlist_screen/$category")
-                                    navController.navigate("playlistscreen/$category") }
+                        item {
+                            LazyRow {
+                                items(categories) { category ->
+                                    PlayCard(
+                                        category = category,
+                                        onClick = {
+                                            Log.d("NAVIGATION", "Navigating to playlist_screen/$category")
+                                            navController.navigate("playListscreen2/$category")
+                                        }
+                                    )
+                                }
+                            }
+                        }
+
+                        items(categories) { category ->
+                            Spacer(modifier = Modifier.height(14.dp))
+                            Text(
+                                text = category,
+                                fontSize = 24.sp,
+                                fontStyle = FontStyle.Italic,
+                                modifier = Modifier.padding(start = 16.dp)
                             )
                         }
                     }
-                }
-
-                items(categories) {category ->
-                    Spacer(modifier = Modifier.height(14.dp))
-                    Text(text = category,
-                        fontSize = 24.sp,
-                        fontStyle = FontStyle.Italic)
-
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun PlayCard(
@@ -179,25 +197,6 @@ fun PlayCard(
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(end = 16.dp, bottom = 16.dp)
                 )
-        }
-    }
-}
-
-@Composable
-fun playlistscreen(
-    category: String,
-    viewModel: SongListViewModel,
-    onSongClick: (Song) -> Unit
-)
-{
-    val songs by viewModel.songListState.collectAsState()
-    val filteredSongs = songs.filter { it.genre.toLowerCase() == category.toLowerCase() }
-
-    LazyColumn {
-        items(filteredSongs) { song ->
-            SongCard(song = song) {
-                onSongClick(song)
-            }
         }
     }
 }

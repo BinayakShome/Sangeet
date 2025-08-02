@@ -2,6 +2,7 @@ package com.example.sangeet.player
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -121,6 +122,7 @@ fun PlayerScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.DarkGray)
                 .padding(24.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -130,9 +132,8 @@ fun PlayerScreen(
                 modifier = Modifier
                     .padding(8.dp)
                     .fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(4.dp)
+                elevation = CardDefaults.cardElevation(24.dp)
             ) {
-                var isPlaying by remember { mutableStateOf(false) }
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()

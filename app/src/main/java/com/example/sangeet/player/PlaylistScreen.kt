@@ -34,7 +34,6 @@ fun PlaylistScreen(
 ) {
     Column(
         modifier = Modifier
-            //.fillMaxSize()
             .background(Color.Black)
             .padding(16.dp)
     ) {
