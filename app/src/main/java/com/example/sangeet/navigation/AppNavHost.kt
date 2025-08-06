@@ -67,7 +67,8 @@ fun AppNavHost(navController: NavHostController, viewModel: SongListViewModel) {
 
         composable("playListscreen2/{category}") { backStackEntry ->
             val category = backStackEntry.arguments?.getString("category") ?: ""
-            playListscreen2(category = category,
+            playListscreen2(
+                category = category,
                 viewModel = viewModel,
                 onSongClick = { song ->
                     // Navigate to player screen with audioUrl and title as arguments
@@ -75,7 +76,12 @@ fun AppNavHost(navController: NavHostController, viewModel: SongListViewModel) {
                     val encodedTitle = Uri.encode(song.title)
                     navController.navigate("player/$encodedUrl/$encodedTitle")
                 },
-                onBack = { navController.popBackStack() })
+                onBack = { navController.popBackStack() },
+                onPlayAllClick = { songs ->
+                    viewModel.playAllSongs(songs.toString())
+
+                }
+            )
         }
     }
 }

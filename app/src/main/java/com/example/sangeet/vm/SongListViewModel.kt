@@ -69,4 +69,25 @@ class SongListViewModel : ViewModel() {
         }
     }
 
+    private var playQueue: List<Song> = emptyList()
+    private var currentIndex = 0
+
+    fun playAllSongs(genre: String) {
+        playQueue = _songListState.value.filter { it.genre.equals(genre, ignoreCase = true) }
+        currentIndex = 0
+
+        if (playQueue.isNotEmpty()) {
+            playSong(playQueue[currentIndex])
+        }
+    }
+
+    fun playNextSong() {
+        if (currentIndex + 1 < playQueue.size) {
+            currentIndex++
+            playSong(playQueue[currentIndex])
+        } else {
+            // End of playlist
+            _isPlaying.value = false
+        }
+    }
 }

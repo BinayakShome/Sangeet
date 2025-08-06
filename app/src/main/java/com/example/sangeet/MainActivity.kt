@@ -22,6 +22,7 @@ import com.example.sangeet.navigation.AppNavHost
 import com.example.sangeet.player.HomeScreen2
 import com.example.sangeet.player.PlayerScreen
 import com.example.sangeet.player.SongListScreen
+import com.example.sangeet.player.indiviualCategory
 import com.example.sangeet.ui.theme.SangeetTheme
 import com.example.sangeet.vm.SongListViewModel
 
@@ -38,10 +39,6 @@ class MainActivity : ComponentActivity() {
 
                 Surface(modifier = Modifier.fillMaxSize()) {
                     AppNavHost(navController = navController, viewModel = viewModel)
-//                    //HomeScreen2(
-//                        navController = navController,
-//                        viewModel = viewModel
-//                    )
                 }
             }
         }
