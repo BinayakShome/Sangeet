@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.sangeet.components.BottomSignature
 import com.example.sangeet.components.SongCard
 import com.example.sangeet.data.Song
 import com.example.sangeet.ui.theme.GoldenYellow
@@ -106,6 +107,12 @@ fun playListscreen2(
                     SongCard(song = song) {
                         onSongClick(song)
                     }
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(80.dp))
+                    BottomSignature()
+                    Spacer(modifier = Modifier.height(60.dp))
                 }
             }
         }
