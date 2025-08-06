@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -20,7 +21,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun PlayCard(
     category: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    btncolor: Brush,
 )
 {
     Card (
@@ -32,6 +34,9 @@ fun PlayCard(
         Box (
             modifier = Modifier
                 .fillMaxSize()
+                .background(btncolor,
+                    //shape = RoundedCornerShape(12.dp)
+                )
                 .background(Color.Transparent),
             contentAlignment = Alignment.BottomEnd
         ){
