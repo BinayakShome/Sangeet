@@ -54,6 +54,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.sangeet.R
+import com.example.sangeet.components.BottomSignature
 import com.example.sangeet.components.NoInternet
 import com.example.sangeet.components.PlayCard
 import com.example.sangeet.components.indiviualCategory
@@ -174,6 +175,9 @@ fun HomeScreen2(
                                 }
                             }
                         }
+                        item {
+                            Spacer(modifier = Modifier.height(32.dp))
+                        }
 
                         items(categories) { category ->
                             Spacer(modifier = Modifier.height(14.dp))
@@ -182,6 +186,12 @@ fun HomeScreen2(
                                 onSongClick = {song ->
                                     onSongClick(song)
                                 })
+                        }
+
+                        item {
+                            Spacer(modifier = Modifier.height(80.dp))
+                            BottomSignature()
+                            Spacer(modifier = Modifier.height(60.dp))
                         }
                     }
                 }

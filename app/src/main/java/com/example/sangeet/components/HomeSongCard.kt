@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -31,7 +32,7 @@ fun HomeSongCard(
     song: Song,
     onClick: () -> Unit
 ) {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.cd_animation))
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.musicplayer))
     val progress by animateLottieCompositionAsState(
         composition = composition,
         iterations = LottieConstants.IterateForever
@@ -45,23 +46,24 @@ fun HomeSongCard(
     ) {
         Column(
             modifier = Modifier
-                .background(Color(0xFF1C1C1C))
+                .background(Color.LightGray)
                 .padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             LottieAnimation(
                 composition = composition,
                 progress = progress,
-                modifier = Modifier.size(120.dp)
+                modifier = Modifier.size(140.dp)
             )
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
                 text = song.title,
-                color = Color.White,
+                color = Color.Black,
                 style = MaterialTheme.typography.titleMedium,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                fontSize = 18.sp
             )
         }
     }
