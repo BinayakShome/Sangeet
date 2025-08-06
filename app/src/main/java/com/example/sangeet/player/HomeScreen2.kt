@@ -57,7 +57,7 @@ fun HomeScreen2(
     viewModel: SongListViewModel
 ) {
     val context = LocalContext.current
-    val categories = listOf("Romance", "Lo-fi", "Devotional", "Chill", "Party", "Bengali", "HollyWood", "Old 90s")
+    val categories = listOf("Romance", "Lo-fi", "Devotional", "Gear Up", "Party", "Bengali", "HollyWood", "Old 90s")
     var currentHour by remember { mutableStateOf(getCurrentHour()) }
     var greet by remember { mutableStateOf("Hello") }
     val showNoInternet by viewModel.showNoInternet.collectAsState()

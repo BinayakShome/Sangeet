@@ -27,17 +27,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -54,6 +57,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.sangeet.R
 import com.example.sangeet.data.Song
 import com.example.sangeet.ui.theme.GoldenYellow
+import kotlinx.coroutines.delay
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -77,6 +81,17 @@ fun PlayerScreen(
         composition = composition,
         iterations = LottieConstants.IterateForever
     )
+
+    var sliderPosition by remember { mutableStateOf(0f) }
+    var duration by remember { mutableStateOf(0L) }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            sliderPosition = exoPlayer.currentPosition.toFloat()
+            duration = exoPlayer.duration.coerceAtLeast(0L)
+            delay(500) // Update every half second
+        }
+    }
 
     DisposableEffect(Unit) {
         onDispose {
@@ -155,6 +170,22 @@ fun PlayerScreen(
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
+
+                    Slider(
+                        value = sliderPosition,
+                        onValueChange = { newPosition ->
+                            sliderPosition = newPosition
+                        },
+                        onValueChangeFinished = {
+                            exoPlayer.seekTo(sliderPosition.toLong())
+                        },
+                        valueRange = 0f..(duration.toFloat().coerceAtLeast(1f)), // Avoid 0 division
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
                     Button(
                         onClick = {
                             if (exoPlayer.isPlaying) exoPlayer.pause() else exoPlayer.play()
