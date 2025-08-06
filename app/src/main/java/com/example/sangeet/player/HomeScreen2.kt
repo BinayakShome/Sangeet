@@ -71,13 +71,15 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun HomeScreen2(
     navController: NavController,
-    viewModel: SongListViewModel
+    viewModel: SongListViewModel,
+    onSongClick: (Song) -> Unit
 ) {
     val context = LocalContext.current
     val categories = listOf("Romance", "Lo-fi", "Devotional", "Gear Up", "Party", "Bengali", "HollyWood", "Old 90s")
     var currentHour by remember { mutableStateOf(getCurrentHour()) }
     var greet by remember { mutableStateOf("Hello") }
     val showNoInternet by viewModel.showNoInternet.collectAsState()
+
 
     LaunchedEffect(currentHour) {
         greet = when (currentHour) {
@@ -177,7 +179,9 @@ fun HomeScreen2(
                             Spacer(modifier = Modifier.height(14.dp))
                             indiviualCategory(category = category,
                                 viewModel = viewModel,
-                                onSongClick = {})
+                                onSongClick = {song ->
+                                    onSongClick(song)
+                                })
                         }
                     }
                 }

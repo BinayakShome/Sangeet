@@ -39,6 +39,7 @@ fun HomeSongCard(
 
     Card(
         modifier = Modifier
+            .padding(start = 8.dp, end = 8.dp)
             .clickable { onClick() },
         elevation = CardDefaults.cardElevation(12.dp)
     ) {

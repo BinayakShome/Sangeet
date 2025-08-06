@@ -25,7 +25,7 @@ fun PlayCard(
 {
     Card (
         modifier = Modifier
-            .padding(8.dp)
+            .padding(start = 8.dp, end = 8.dp)
             .size(320.dp, 200.dp)
             .clickable {onClick()}
     ){
